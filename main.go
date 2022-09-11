@@ -4,7 +4,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"temp/temp/GinDemo"
+	"temp/temp/ginDemo"
 )
 
 func main() {
@@ -13,7 +13,7 @@ func main() {
 	//k8sTest()
 	//interfaceDemo.Println(interfaceDemo.Cook{})
 
-	GinDemo.RequestTest()
+	ginDemo.RequestTest()
 
 	//GetPodByName("k3s", "kube-system", "traefik-df4ff85d6-l86vk")
 }
