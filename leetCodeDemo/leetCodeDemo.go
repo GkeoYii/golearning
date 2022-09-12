@@ -44,14 +44,56 @@ func main() {
 	//fmt.Println(reorderSpaces(text))
 	//quality = [10,20,5], wage = [70,50,30]
 
-	quality := []int{3, 1, 10, 10, 1}
-	wage := []int{4, 8, 2, 2, 7}
+	//quality := []int{3, 1, 10, 10, 1}
+	//wage := []int{4, 8, 2, 2, 7}
+	//
+	////quality := []int{10, 20, 5}
+	////wage := []int{70, 50, 30}
+	//
+	//fmt.Println(mincostToHireWorkers(quality, wage, 3))
+	nums := []int{3, 6, 1, 7, 0}
+	sort.Sort(sort.Reverse(sort.IntSlice(nums)))
 
-	//quality := []int{10, 20, 5}
-	//wage := []int{70, 50, 30}
+	fmt.Println(" nums: ", nums)
 
-	fmt.Println(mincostToHireWorkers(quality, wage, 3))
+}
 
+func specialArray(nums []int) int {
+
+	//降序排序
+	sort.Slice(nums,
+		func(i, j int) bool {
+			return nums[i] > nums[j]
+		})
+	//结束条件
+	max := nums[0]
+	//存储x和符合条件的元素个数
+	m := make(map[int]int)
+	for x := 0; x <= max; x++ {
+		for _, v := range nums {
+			if v >= x {
+				m[x]++
+			}
+		}
+	}
+
+	flag := 0
+	i := 0
+	//x 和 元素个数相同
+	for k, v := range m {
+		if k != v {
+			continue
+		} else {
+			i++
+			flag = k
+		}
+	}
+	//只有一个符合条件
+	if i == 1 {
+		return flag
+	} else {
+		return -1
+	}
 }
 
 func mincostToHireWorkers(quality []int, wage []int, k int) float64 {
@@ -210,8 +252,8 @@ func shuffle(nums []int, n int) []int {
 func maxProduct(nums []int) int {
 
 	sort.Ints(nums)
-	len := len(nums)
-	return (nums[len-1] - 1) * (nums[len-2] - 1)
+	lens := len(nums)
+	return (nums[lens-1] - 1) * (nums[lens-2] - 1)
 }
 
 func maxEqualFreq(nums []int) (ans int) {
