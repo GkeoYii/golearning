@@ -51,11 +51,287 @@ func main() {
 	////wage := []int{70, 50, 30}
 	//
 	//fmt.Println(mincostToHireWorkers(quality, wage, 3))
-	nums := []int{3, 6, 1, 7, 0}
-	sort.Sort(sort.Reverse(sort.IntSlice(nums)))
+	//nums := []int{3, 6, 1, 7, 0}
+	//sort.Sort(sort.Reverse(sort.IntSlice(nums)))
+	//
+	//fmt.Println(" nums: ", nums)
 
-	fmt.Println(" nums: ", nums)
+	//s := "abbcccaa"
+	//fmt.Println(countHomogenous(s))
+	//s := "XXX"
+	//fmt.Println(minimumMoves(s))
+	//
+	//nums1 := []int{1, 1, 3, 2}
+	//nums2 := []int{2, 3}
+	//nums3 := []int{3}
+	//fmt.Println(twoOutOfThree(nums1, nums2, nums3))
 
+	//s := "hello world 5 x 5"
+	//fmt.Println(areNumbersAscending(s))
+
+	//nums := []int{0, 1, 2, 3, 4, 5, 6}
+	//fmt.Println("result: ", sort.Search(len(nums), func(i int) bool {
+	//	fmt.Println("index: ", i)
+	//	return nums[i] >= 2
+	//}))
+	//
+	//t := time.Now().Unix()
+	//defer fmt.Println(time.Now().Unix() - t)
+	//time.Sleep(2 * time.Second)
+	//
+
+	//t := time.Now().Unix()
+	//defer func() {
+	//	fmt.Println(time.Now().Unix() - t)
+	//}()
+	//time.Sleep(2 * time.Second)
+
+	//words := []string{"leetcode", "win", "loops", "success"}
+	//pref := "code"
+	//fmt.Println(prefixCount(words, pref))
+	//fmt.Println(countEven(30))
+
+	fmt.Println(digitCount("123"))
+}
+
+func digitCount(num string) bool {
+	cnt := map[rune]int{}
+	for _, c := range num {
+		cnt[c-'0']++
+	}
+	for i, c := range num {
+		fmt.Println()
+		if cnt[rune(i)] != int(c-'0') {
+			return false
+		}
+	}
+	return true
+}
+
+func prefixCount(words []string, pref string) (count int) {
+	for _, word := range words {
+		if strings.HasPrefix(word, pref) {
+			count++
+		}
+	}
+	return
+}
+func countEven(num int) int {
+	nums := []int{}
+	for i := 1; i <= num; i++ {
+		if temp(i) {
+			nums = append(nums, i)
+		}
+	}
+	return len(nums)
+}
+
+func temp(num int) bool {
+	sum := 0
+	for num != 0 {
+		sum += num % 10
+		num = num / 10
+	}
+	return sum%2 == 0
+}
+
+func f(big, length int) int {
+	if length == 0 {
+		return 0
+	}
+	if length < big {
+		return (2*big + 1 - length) * length / 2
+	}
+	return (big+1)*big/2 + length - big
+
+}
+
+func maxValue(n int, index int, maxSum int) int {
+
+	return sort.Search(maxSum, func(mid int) bool {
+		left := index
+		right := n - index - 1
+		return mid+f(mid, left)+f(mid, right) >= maxSum
+	})
+}
+
+func areNumbersAscending(s string) bool {
+
+	nums := strings.Split(s, " ")
+	fmt.Println(nums)
+	temp := 0
+	for i := 0; i < len(nums); i++ {
+
+		num, err := strconv.Atoi(nums[i])
+		if err != nil {
+			continue
+		}
+		fmt.Println(num)
+		if num > temp {
+			temp = num
+			continue
+		}
+		return false
+	}
+	return true
+}
+
+type ExamRoom struct {
+	size, index int
+	right       map[int]int
+}
+
+func Constructor2(n int) ExamRoom {
+	return ExamRoom{size: n, index: 0, right: map[int]int{}}
+}
+
+func (this *ExamRoom) Seat() int {
+	if len(this.right) == 0 {
+		this.right[0] = 1
+		return 0
+	}
+	this.index++
+	if len(this.right) == 1 {
+		this.right[1] = this.size - 1
+		return this.right[1]
+	}
+	this.right[this.index] = searchIndex(this.right)
+	return this.right[this.index]
+}
+
+func (this *ExamRoom) Leave(p int) {
+	this.right[p] = 0
+}
+
+func searchIndex(m map[int]int) int {
+	nums := []int{}
+	for _, v := range m {
+		nums = append(nums, v)
+	}
+	sort.Ints(nums)
+
+	for i := 1; i < len(nums)-1; i++ {
+
+	}
+
+	temp := 0
+	res := 0
+	for _, v := range nums {
+		if v != 0 && v-res > temp {
+			temp = v - res
+		}
+		res = v
+	}
+	return res / 2
+}
+
+/**
+ * Your ExamRoom object will be instantiated and called as such:
+ * obj := Constructor(n);
+ * param_1 := obj.Seat();
+ * obj.Leave(p);
+ */
+
+func onlyOne(nums1 []int) []int {
+	nums := []int{}
+	res := make(map[int]int)
+	for _, v := range nums1 {
+		if _, ok := res[v]; ok {
+			res[v]++
+		} else {
+			res[v] = 1
+		}
+	}
+	for k, _ := range res {
+		nums = append(nums, k)
+	}
+	return nums
+}
+
+func twoOutOfThree(nums1 []int, nums2 []int, nums3 []int) []int {
+	res := make(map[int]int)
+	nums1 = onlyOne(nums1)
+	nums2 = onlyOne(nums2)
+	nums3 = onlyOne(nums3)
+
+	for _, v := range nums1 {
+		if _, ok := res[v]; ok {
+			res[v]++
+		} else {
+			res[v] = 1
+		}
+	}
+	fmt.Println(res)
+
+	for _, v := range nums2 {
+		if _, ok := res[v]; ok {
+			res[v]++
+		} else {
+			res[v] = 1
+		}
+	}
+	fmt.Println(res)
+	for _, v := range nums3 {
+		if _, ok := res[v]; ok {
+			res[v]++
+		} else {
+			res[v] = 1
+		}
+	}
+
+	nums := []int{}
+
+	fmt.Println(res)
+
+	for k, v := range res {
+		if v > 1 {
+			nums = append(nums, k)
+		}
+	}
+	return nums
+}
+func minimumLength(s string) int {
+	left, right := 0, len(s)-1
+	for left < right && s[left] == s[right] {
+		v := s[left]
+		for left <= right && s[left] == v {
+			left++
+		}
+		for right >= left && s[right] == v {
+			right--
+		}
+	}
+
+	return right - left + 1
+}
+
+func minimumMoves(s string) int {
+	c := 0
+	for i := 0; i < len(s); i++ {
+		if s[i] == 'X' {
+			i = i + 2
+			c = c + 1
+		}
+	}
+
+	return c
+}
+
+func countHomogenous(s string) (res int) {
+	const mod int = 1e9 + 7
+	prev := rune(s[0])
+	cnt := 0
+	for _, c := range s {
+		if c == prev {
+			cnt++
+		} else {
+			res += (cnt + 1) * cnt / 2
+			cnt = 1
+			prev = c
+		}
+	}
+	res += (cnt + 1) * cnt / 2
+	return res % mod
 }
 
 func specialArray(nums []int) int {
@@ -98,18 +374,13 @@ func specialArray(nums []int) int {
 
 func mincostToHireWorkers(quality []int, wage []int, k int) float64 {
 
-	nums := 1
-	for _, value := range wage {
-		nums *= value
-	}
-
 	type temp struct {
 		index int
-		value int
+		value float64
 	}
 	var ts []temp
 	for i := 0; i < len(quality); i++ {
-		ts = append(ts, temp{i, (nums / wage[i]) * quality[i]})
+		ts = append(ts, temp{i, float64(wage[i]) / float64(quality[i])})
 	}
 
 	sort.Slice(ts,
@@ -326,12 +597,6 @@ func (this *OrderedStream) Insert(idKey int, value string) []string {
 	}
 	return this.steam[start:this.ptr]
 }
-
-/**
- * Your OrderedStream object will be instantiated and called as such:
- * obj := Constructor(n);
- * param_1 := obj.Insert(idKey,value);
- */
 
 func maxScore(s string) int {
 	max := 0
