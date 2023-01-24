@@ -108,6 +108,10 @@ func GetPods(namespace string) {
 	for _, pod := range pods.Items {
 		fmt.Println("pod name: ", pod.Name)
 	}
-
 	fmt.Printf("There are %d pods in the cluster\n", len(pods.Items))
+}
+
+func getPods() {
+
+	clientcmd.BuildConfigFromKubeconfigGetter("", nil)
 }
