@@ -54,7 +54,7 @@ func run() {
 }
 
 func numberSum(intChan chan int, sumChan chan int) {
-	for true {
+	for {
 		num, ok := <-intChan
 		if !ok {
 			break
